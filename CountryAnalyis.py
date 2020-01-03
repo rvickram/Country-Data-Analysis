@@ -61,10 +61,22 @@ def cleanAndMergeTop15():
 
     return result
 
+# return a dataframe containing top 15 countries, and and average gdp from the last 10 years (2006-2015)
+def averageGDP(top15):
+    avgGDP = top15.copy()
+    avgGDP['avgGDP'] = avgGDP[['2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015']].mean(axis=1)
+
+    return avgGDP['avgGDP'].sort_values(0, ascending=False)
 
 
-#run function
+# get the merged and cleaned data:
 result = cleanAndMergeTop15()
 
 print(result)
 result.to_csv('output.csv', sep=',')
+
+# get the average gdp over the last 10 years
+avgGDP = averageGDP(result)
+print('\n--------------\n')
+print(avgGDP)
+avgGDP.to_csv('avgGDP.csv', sep=',', header='True')
