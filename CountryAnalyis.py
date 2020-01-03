@@ -47,7 +47,9 @@ def function_one():
     ScimEnValidData = ScimEn.where(ScimEn['Rank'] < 16).dropna()
     ScimEnValidData['Rank'] = ScimEnValidData['Rank'].astype(int)
 
+    # merge Scimago rank data with energy data
     mergeScimEn_Energy = pd.merge(ScimEnValidData, energy, how='left', on='Country')
+    mergeScimEn_Energy.set_index('Country', inplace=True)
 
     return mergeScimEn_Energy
 
