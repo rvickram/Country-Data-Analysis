@@ -40,10 +40,15 @@ def function_one():
     # import Sciamgo rank data
     ScimEn = pd.read_excel('scimagojr-3.xlsx')
 
-    # prepare GDP data for merging
+    # prepare GDP data for merging (set index)
     GDPValidYears = GDP[['Country Name', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015']]
     GDPValidYears.set_index('Country Name', inplace=True)
 
-    return energy.head()
+    # prepare Scimago data for merging (set rank, index)
+    ScimEnValidData = ScimEn.set_index('Country')
+    ScimEnValidData = ScimEnValidData.where(ScimEnValidData['Rank'] < 16).dropna()
+    ScimEnValidData['Rank'] = ScimEnValidData['Rank'].astype(int)
+
+    return ScimEnValidData['Rank']
 
 print(function_one())
