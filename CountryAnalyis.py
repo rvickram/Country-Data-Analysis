@@ -8,15 +8,15 @@ def cleanEnergyData(energy):
     energy = energy.replace('...', np.NaN)
     # update columns
     energy.columns = ['Country', 'Energy Supply', 'Energy Supply per Capita', '% Renewable']
+    # remove numerical values
+    energy['Country'] = energy['Country'].str.replace('\d+', '')
+    # remove parentheses
+    energy['Country'] = energy['Country'].replace(r"\(.*\)","")
     # fix country names
     energy['Country'] = energy['Country'].replace('Republic of Korea', 'South Korea')
     energy['Country'] = energy['Country'].replace('United States of America', 'United States')
     energy['Country'] = energy['Country'].replace('United Kingdom of Great Britain and Northern Ireland', 'United Kingdom')
     energy['Country'] = energy['Country'].replace('China, Hong Kong Special Administrative Region', 'Hong Kong')
-    # remove numerical values
-    energy['Country'] = energy['Country'].replace('\d+', '')
-    # remove parentheses
-    energy['Country'] = energy['Country'].replace(r"\(.*\)","")
 
     return energy
 
@@ -42,13 +42,13 @@ def function_one():
 
     # prepare GDP data for merging (set index)
     GDPValidYears = GDP[['Country Name', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015']]
-    GDPValidYears.set_index('Country Name', inplace=True)
 
     # prepare Scimago data for merging (set rank, index)
-    ScimEnValidData = ScimEn.set_index('Country')
-    ScimEnValidData = ScimEnValidData.where(ScimEnValidData['Rank'] < 16).dropna()
+    ScimEnValidData = ScimEn.where(ScimEn['Rank'] < 16).dropna()
     ScimEnValidData['Rank'] = ScimEnValidData['Rank'].astype(int)
 
-    return ScimEnValidData['Rank']
+    mergeScimEn_Energy = pd.merge(ScimEnValidData, energy, how='left', on='Country')
+
+    return mergeScimEn_Energy
 
 print(function_one())
