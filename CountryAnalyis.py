@@ -1,3 +1,5 @@
+# Created By: Ryan Vickramasinghe
+
 import pandas as pd
 import numpy as np
 
@@ -11,7 +13,7 @@ def cleanEnergyData(energy):
     # remove numerical values
     energy['Country'] = energy['Country'].str.replace('\d+', '')
     # remove parentheses
-    energy['Country'] = energy['Country'].replace(r"\(.*\)","")
+    energy['Country'] = energy['Country'].str.replace(r"\(.*\)","").str.strip()
     # fix country names
     energy['Country'] = energy['Country'].replace('Republic of Korea', 'South Korea')
     energy['Country'] = energy['Country'].replace('United States of America', 'United States')
@@ -49,8 +51,16 @@ def function_one():
 
     # merge Scimago rank data with energy data
     mergeScimEn_Energy = pd.merge(ScimEnValidData, energy, how='left', on='Country')
-    mergeScimEn_Energy.set_index('Country', inplace=True)
 
-    return mergeScimEn_Energy
+    # merge above with GDP data
+    result = pd.merge(mergeScimEn_Energy, GDPValidYears, how='left', left_on='Country', right_on='Country Name')
+    result.drop('Country Name', axis=1,inplace=True)
+    result.set_index('Country', inplace=True)
 
-print(function_one())
+    return result
+
+#run function
+result = function_one()
+
+print(result)
+result.to_csv('output.csv', sep=',')
