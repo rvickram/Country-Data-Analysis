@@ -31,8 +31,8 @@ def cleanGDPData(GDP):
 
     return GDP
 
-# Load the file
-def function_one():
+# Cleans all data, merges 3 files, and only includes the top 15 countries by Scimago rank
+def cleanAndMergeTop15():
     # import energy data (remove header/footer)
     energy = pd.read_excel('Energy Indicators.xls', skiprows=17, skipfooter=38)
     energy = cleanEnergyData(energy)
@@ -61,8 +61,10 @@ def function_one():
 
     return result
 
+
+
 #run function
-result = function_one()
+result = cleanAndMergeTop15()
 
 print(result)
 result.to_csv('output.csv', sep=',')
