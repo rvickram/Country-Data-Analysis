@@ -6,19 +6,21 @@ import numpy as np
 def cleanEnergyData(energy):
     # remove garbage columns
     energy.drop(['Unnamed: 0', 'Unnamed: 1'], axis = 1, inplace = True)
-    # replace missing data with NaN
-    energy = energy.replace('...', np.NaN)
     # update columns
     energy.columns = ['Country', 'Energy Supply', 'Energy Supply per Capita', '% Renewable']
     # remove numerical values
     energy['Country'] = energy['Country'].str.replace('\d+', '')
     # remove parentheses
     energy['Country'] = energy['Country'].str.replace(r"\(.*\)","").str.strip()
+     # replace missing data with NaN
+    energy = energy.replace('...', np.NaN)
     # fix country names
     energy['Country'] = energy['Country'].replace('Republic of Korea', 'South Korea')
     energy['Country'] = energy['Country'].replace('United States of America', 'United States')
     energy['Country'] = energy['Country'].replace('United Kingdom of Great Britain and Northern Ireland', 'United Kingdom')
     energy['Country'] = energy['Country'].replace('China, Hong Kong Special Administrative Region', 'Hong Kong')
+    # convert pentajoules to gigajoules
+    energy['Energy Supply'] = energy['Energy Supply']*1000000
 
     return energy
 
