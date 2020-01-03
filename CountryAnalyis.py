@@ -68,15 +68,29 @@ def averageGDP(top15):
 
     return avgGDP['avgGDP'].sort_values(0, ascending=False)
 
+# return the GDP change for the 'n'th largest country (by GDP)
+def changeInGDP(top15, avgGDP, n):
+    # get country with nth largest average GDP
+    nLargestCountry = avgGDP.index[n-1]
+    # get all gdp data for above country
+
+    return top15.loc[nLargestCountry]
+
 
 # get the merged and cleaned data:
-result = cleanAndMergeTop15()
+top15 = cleanAndMergeTop15()
 
-print(result)
-result.to_csv('output.csv', sep=',')
+print(top15)
+top15.to_csv('output.csv', sep=',')
 
 # get the average gdp over the last 10 years
-avgGDP = averageGDP(result)
+avgGDP = averageGDP(top15)
 print('\n--------------\n')
 print(avgGDP)
 avgGDP.to_csv('avgGDP.csv', sep=',', header='True')
+
+# get the change in GDP
+print('\n--------------\n')
+print(changeInGDP(top15, avgGDP, 6))
+# n = 6
+# print('Change in GDP for ' + str(n) + 'th largest GDP is: ' + str(changeInGDP(top15, avgGDP, n)))
