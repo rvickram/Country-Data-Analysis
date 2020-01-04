@@ -102,3 +102,5 @@ n = 6
 print('Change in GDP for ' + str(n) + 'th largest GDP is: ' + str(changeInGDP(top15, avgGDP, n)))
 
 #get the max renewable energy country and percentage:
+maxRenewable = getMaxRenewable(top15)
+print('Maximum renwable energy country: ' + maxRenewable[0] + ' with ' + str(maxRenewable[1]) + '%% renewable')
