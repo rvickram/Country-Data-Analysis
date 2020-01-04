@@ -77,6 +77,11 @@ def changeInGDP(top15, avgGDP, n):
 
     return rowData['2015']-rowData['2006']
 
+#return maximum renewable energy tuple (country, % renewable)
+def getMaxRenewable(top15):
+    maxRenewCountry = top15['% Renewable'].argmax()
+    maxRenewRow = top15.loc[maxRenewCountry]
+    return (maxRenewCountry, maxRenewRow['% Renewable'])
 
 # get the merged and cleaned data:
 top15 = cleanAndMergeTop15()
@@ -95,3 +100,5 @@ print('\n--------------\n')
 # print(changeInGDP(top15, avgGDP, 6))
 n = 6
 print('Change in GDP for ' + str(n) + 'th largest GDP is: ' + str(changeInGDP(top15, avgGDP, n)))
+
+#get the max renewable energy country and percentage:
