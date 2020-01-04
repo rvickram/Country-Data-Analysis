@@ -77,11 +77,17 @@ def changeInGDP(top15, avgGDP, n):
 
     return rowData['2015']-rowData['2006']
 
-#return maximum renewable energy tuple (country, % renewable)
+# return maximum renewable energy tuple (country, % renewable)
 def getMaxRenewable(top15):
     maxRenewCountry = top15['% Renewable'].argmax()
     maxRenewRow = top15.loc[maxRenewCountry]
     return (maxRenewCountry, maxRenewRow['% Renewable'])
+
+# return countries grouped by continent, and estimate population:
+def getContinentPopData(top15):
+    top15['PopEst'] = top15['Energy Supply']/top15['Energy Supply per Capita']
+    return top15['PopEst'].sort_values(ascending=False)
+
 
 # get the merged and cleaned data:
 top15 = cleanAndMergeTop15()
@@ -97,10 +103,14 @@ avgGDP.to_csv('avgGDP.csv', sep=',', header='True')
 
 # get the change in GDP
 print('\n--------------\n')
-# print(changeInGDP(top15, avgGDP, 6))
 n = 6
 print('Change in GDP for ' + str(n) + 'th largest GDP is: ' + str(changeInGDP(top15, avgGDP, n)))
 
 #get the max renewable energy country and percentage:
 maxRenewable = getMaxRenewable(top15)
+print('\n--------------\n')
 print('Maximum renwable energy country: ' + maxRenewable[0] + ' with ' + str(maxRenewable[1]) + '%% renewable')
+
+# estimate population data, grouped by continent
+print('\n--------------\n')
+print(getContinentPopData(top15))
