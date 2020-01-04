@@ -85,8 +85,28 @@ def getMaxRenewable(top15):
 
 # return countries grouped by continent, and estimate population:
 def getContinentPopData(top15):
+    # map the continent dictionary to the country data
+    ContinentDict  = {'China':'Asia', 
+                  'United States':'North America', 
+                  'Japan':'Asia', 
+                  'United Kingdom':'Europe', 
+                  'Russian Federation':'Europe', 
+                  'Canada':'North America', 
+                  'Germany':'Europe', 
+                  'India':'Asia',
+                  'France':'Europe', 
+                  'South Korea':'Asia', 
+                  'Italy':'Europe', 
+                  'Spain':'Europe', 
+                  'Iran':'Asia',
+                  'Australia':'Australia', 
+                  'Brazil':'South America'}
+    top15['Continent'] = pd.Series(ContinentDict)
+
+    # get a population estimate from energy supply data
     top15['PopEst'] = top15['Energy Supply']/top15['Energy Supply per Capita']
-    return top15['PopEst'].sort_values(ascending=False)
+
+    return top15['Continent']
 
 
 # get the merged and cleaned data:
