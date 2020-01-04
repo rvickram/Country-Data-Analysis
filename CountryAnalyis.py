@@ -73,8 +73,9 @@ def changeInGDP(top15, avgGDP, n):
     # get country with nth largest average GDP
     nLargestCountry = avgGDP.index[n-1]
     # get all gdp data for above country
+    rowData = top15.loc[nLargestCountry]
 
-    return top15.loc[nLargestCountry]
+    return rowData['2015']-rowData['2006']
 
 
 # get the merged and cleaned data:
@@ -91,6 +92,6 @@ avgGDP.to_csv('avgGDP.csv', sep=',', header='True')
 
 # get the change in GDP
 print('\n--------------\n')
-print(changeInGDP(top15, avgGDP, 6))
-# n = 6
-# print('Change in GDP for ' + str(n) + 'th largest GDP is: ' + str(changeInGDP(top15, avgGDP, n)))
+# print(changeInGDP(top15, avgGDP, 6))
+n = 6
+print('Change in GDP for ' + str(n) + 'th largest GDP is: ' + str(changeInGDP(top15, avgGDP, n)))
