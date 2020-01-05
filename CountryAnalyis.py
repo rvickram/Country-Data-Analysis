@@ -106,7 +106,8 @@ def getContinentPopData(top15):
     # get a population estimate from energy supply data
     top15['PopEst'] = top15['Energy Supply']/top15['Energy Supply per Capita']
 
-    return top15['Continent']
+    # group values by continent, and add required columns
+    return top15.set_index('Continent').groupby(level=0)['PopEst'].agg({'size', 'sum', 'mean', 'std'})
 
 
 # get the merged and cleaned data:
